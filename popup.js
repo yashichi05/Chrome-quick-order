@@ -3,7 +3,7 @@ chrome.runtime.onMessage.addListener(function (request, sender) {
 
     if (request.action == "getSource") {
         //讀取已存的ISO商品明細
-        chrome.storage.sync.get("value", function (items) {
+        chrome.storage.local.get("value", function (items) {
             document.getElementById('isolist').value = items.value
             result = request.source
             //轉ISO資料為html
@@ -31,7 +31,7 @@ chrome.runtime.onMessage.addListener(function (request, sender) {
                 if (found == 1) {
                     console.log(trlist[row].textContent.slice(1))
                     //輸出顯示
-                    input1.value += result.cusname + "	" + trlist[row].querySelector("td").textContent + "	" + trlist[row].querySelectorAll("td")[1].textContent + "	" + trlist[row].querySelectorAll("td")[2].textContent + "\n";
+                    input1.value += result.orderid + "	" +result.cusname + "	" + trlist[row].querySelector("td").textContent + "	" + trlist[row].querySelectorAll("td")[1].textContent + "	" + trlist[row].querySelectorAll("td")[2].textContent + "\n";
                 } else {
                     input1.value = result.prd[i];
 
@@ -47,18 +47,19 @@ document.addEventListener('DOMContentLoaded', function () {
     // 偵測案件事件並執行
     updatebtn.addEventListener('click', function () {
         var xhr = new XMLHttpRequest();
-        xhr.open("GET", "https://docs.google.com/spreadsheets/d/1o14isxIEJIzNOraSgDbR0eGZqzRFSKpncFZM1C7cTCA/gviz/tq?tqx=out:html&tq=select%20B,C,D&gid=0", false);
+        xhr.open("GET", "https://docs.google.com/spreadsheets/d/19ZXwhENPrLmLURoKO4xXoCDahpyMG5wuU_8xsU74kyI/gviz/tq?tqx=out:html&tq=select%20B,C,D&gid=0", false);
         xhr.send();
         document.getElementById('isolist').value = xhr.responseText;
         document.querySelector('button').innerHTML = "OK";
 
 
-
         //存入更新資料
         var theValue = document.getElementById('isolist').value;
-        chrome.storage.sync.set({
+        
+        chrome.storage.local.set({
             'value': theValue
         }, function () {});
+        console.log(theValue)
 
     });
 
