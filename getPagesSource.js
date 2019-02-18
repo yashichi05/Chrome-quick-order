@@ -33,7 +33,7 @@ function DOMtoString(document_root) {
         } else if (htmlfound.ship.slice(0, 1) == "7") {
             htmlfound.ship = "7-11"
         } else {
-            htmlfound.ship = "宅配"
+            htmlfound.ship = "新竹"
         }
         htmlfound.shipprice = document_root.querySelectorAll(".number")[search_c.length + 3].textContent;
         htmlfound.allprice = document_root.querySelectorAll(".number")[0].textContent.replace(",", "");
