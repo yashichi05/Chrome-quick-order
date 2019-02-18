@@ -80,7 +80,7 @@ document.addEventListener('DOMContentLoaded', function () {
         chrome.storage.local.set({
             'value': theValue
         }, function () {});
-        console.log(theValue)
+        console.log("OK")
 
     });
 
