@@ -3,58 +3,53 @@ chrome.runtime.onMessage.addListener(function (request, sender) {
 
     if (request.action == "getSource") {
         //讀取已存的ISO商品明細
-        chrome.storage.local.get("s_value", function (items) {
-            document.getElementById('isolist').value = items.value
+        chrome.storage.local.get("sg_value", function (items) {
+            document.getElementById('isolist').value = items.sg_value
+
             result = request.source
             //轉ISO資料為html
             var parser = new DOMParser();
-            isohtml = parser.parseFromString(items.value, "text/html");
+            isohtml = parser.parseFromString(items.sg_value, "text/html");
 
             var found = 0;
-            for (i = 0; i < result.prd.length; i++) {
+            if (result.prd.length == 0) { //無款式
+
                 //搜尋ISO
-                var trlist = isohtml.querySelectorAll("tr");
+                var trlist = isohtml.querySelectorAll("tr"); //G表商品列
                 var row
                 found = 0; //有沒有找到東西
                 for (ii = 0; ii < trlist.length; ii++) {
                     //macth 搜尋字串是否含有特定文字
-                    if (trlist[ii].querySelector("td").innerHTML.match(result.prd[i])) {
+
+                    if (trlist[ii].querySelectorAll("td")[3].innerHTML.match(result.prdurl)) {
                         row = ii;
                         found = 1
+
                         break;
                     }
 
-                }
-                if (result.prd[i] == "") { //如果ISO 是空白 設為沒找到
-                    found = 0;
                 }
                 var today = new Date()
                 //寫入訂單資料
                 if (found == 1) {
                     //輸出顯示
+                    input1.value += today.getFullYear().toString() + "/" + (today.getMonth() + 1).toString() + "/" + today.getDate().toString() + "	" +
+                        result.orderid + "	" + result.cusname + "	" + result.tel + "	" +   result.ship + "	" + result.allprice + "\n";
 
-                    if (i == 0) { //第一次迴圈加入發票金額
-                        input1.value += today.getFullYear().toString() + "/" + (today.getMonth() + 1).toString() + "/" + today.getDate().toString() + "	" +
-                            result.orderid + "	" + result.cusname + "	" + result.tel + "	" + result.account + "	" + trlist[row].querySelector("td").textContent + "	" + trlist[row].querySelectorAll("td")[1].textContent + "	" + trlist[row].querySelectorAll("td")[2].textContent + "	" + result.prdcount[i] + "	" + Number(result.prdprice[i]) / Number(result.prdcount[i]).toString() + "	" + result.prdprice[i] + "	" + result.ship + "	" + result.shipprice + "		" + result.allprice + "\n";
 
-                    } else {
-                        input1.value += today.getFullYear().toString() + "/" + (today.getMonth() + 1).toString() + "/" + today.getDate().toString() + "	" +
-                            result.orderid + "	" + result.cusname + "	" + result.tel + "	" + result.account + "	" + trlist[row].querySelector("td").textContent + "	" + trlist[row].querySelectorAll("td")[1].textContent + "	" + trlist[row].querySelectorAll("td")[2].textContent + "	" + result.prdcount[i] + "	" + Number(result.prdprice[i]) / Number(result.prdcount[i]).toString() + "	" + result.prdprice[i] + "\n";
-                    }
                 } else { //iso找不到，則顯示文字
-                    if (i == 0) { //第一次迴圈加入發票金額
-                        console.log(result.prdn)
-                        input1.value += today.getFullYear().toString() + "/" + (today.getMonth() + 1).toString() + "/" + today.getDate().toString() + "	" +
-                            result.orderid + "	" + result.cusname + "	" + result.tel + "	" + result.account + "	" + result.prd[i] + "	" + result.prdn[i] + "		" + result.prdcount[i] + "	" + Number(result.prdprice[i]) / Number(result.prdcount[i]).toString() + "	" + result.prdprice[i] + "	" + result.ship + "	" + result.shipprice + "		" + result.allprice + "\n";
-
-                    } else {
-                        input1.value += today.getFullYear().toString() + "/" + (today.getMonth() + 1).toString() + "/" + today.getDate().toString() + "	" +
-                            result.orderid + "	" + result.cusname + "	" + result.tel + "	" + result.account + "	" + result.prd[i] + "	" + result.prdn[i] + "		" + result.prdcount[i] + "	" + Number(result.prdprice[i]) / Number(result.prdcount[i]).toString() + "	" + result.prdprice[i] + "\n";
-                    }
 
                 }
+
+
+
+
             }
-            if (result.prdn.length == 0) {
+
+
+
+
+            if (result.orderid.length == 0) {
                 input1.value = "無訂單資料";
 
             }
@@ -68,7 +63,7 @@ document.addEventListener('DOMContentLoaded', function () {
     // 偵測案件事件並執行
     updatebtn.addEventListener('click', function () {
         var xhr = new XMLHttpRequest();
-        xhr.open("GET", "https://docs.google.com/spreadsheets/d/19ZXwhENPrLmLURoKO4xXoCDahpyMG5wuU_8xsU74kyI/gviz/tq?tqx=out:html&tq=select%20A,O&gid=929906211", false);
+        xhr.open("GET", "https://docs.google.com/spreadsheets/d/19ZXwhENPrLmLURoKO4xXoCDahpyMG5wuU_8xsU74kyI/gviz/tq?tqx=out:html&tq=select%20A,B,C,O&gid=929906211", false);
         xhr.send();
         document.getElementById('isolist').value = xhr.responseText;
         document.querySelector('button').innerHTML = "OK";

@@ -8,13 +8,15 @@ function DOMtoString(document_root) {
         cusname: "",
         orderid: "",
         tel: "",
-        account: "",
-        ship: "",
+        ship: "新竹",
         prdprice: "",
         allprice: "",
         discount: "",
         fee: "0",
         receipt: "",
+        option: "",
+        prdname:"",
+        prdurl:"",
         prd: [],
     };
 
@@ -25,76 +27,86 @@ function DOMtoString(document_root) {
 
 
         var orderinfo_r = document_root.querySelectorAll(".card-box")[0].querySelectorAll("th")
-        var prdinfo_r = document_root.querySelectorAll(".card-box")[1].querySelectorAll("th")
-        
+        var prdinfo_r = document_root.querySelectorAll(".card-box")[1].querySelectorAll(".table")[0].querySelectorAll("th")
+
         for (var i = 0; i < orderinfo_r.length; i++) {
             if (orderinfo_r[i].textContent == "收件人") {
-                
-                htmlfound.cusname = cusname_s[i].nextElementSibling.textContent;
+
+                htmlfound.cusname = orderinfo_r[i].nextElementSibling.textContent;
             }
-            
+
         }
-        
+
         for (var i = 0; i < orderinfo_r.length; i++) {
-            
+
             if (orderinfo_r[i].textContent == "聯絡電話") {
-                htmlfound.tel = cusname_s[i].nextElementSibling.textContent;
+                htmlfound.tel = orderinfo_r[i].nextElementSibling.textContent;
             }
-            
+
         }
         for (var i = 0; i < orderinfo_r.length; i++) {
             if (orderinfo_r[i].textContent == "訂單編號") {
-                htmlfound.orderid = cusname_s[i].nextElementSibling.textContent.replace("#", "");
+                htmlfound.orderid = orderinfo_r[i].nextElementSibling.textContent.replace("#", "").split(" ")[0];
             }
         }
-        
+
         for (var i = 0; i < orderinfo_r.length; i++) {
             if (orderinfo_r[i].textContent == "取貨門市") {
-                htmlfound.orderid = cusname_s[i].nextElementSibling.textContent;
+                htmlfound.ship = orderinfo_r[i].nextElementSibling.textContent.split("-")[0];
+                if (htmlfound.ship == "7"){
+                   htmlfound.ship = "'7-11" 
+                }
             }
         }
 
         for (var i = 0; i < orderinfo_r.length; i++) {
             if (orderinfo_r[i].textContent == "折扣金額") {
-                htmlfound.discount = cusname_s[i].nextElementSibling.textContent.replace("$", "");
+                htmlfound.discount = orderinfo_r[i].nextElementSibling.textContent.split("$")[1].split(" ")[0].replace("\n", "");
+                htmlfound.discount = -1*Number(htmlfound.discount)
             }
         }
 
         for (var i = 0; i < orderinfo_r.length; i++) {
             if (orderinfo_r[i].textContent == "超商付款手續費") {
-                htmlfound.fee = cusname_s[i].nextElementSibling.textContent.replace("$", "");
+                htmlfound.fee = orderinfo_r[i].nextElementSibling.textContent.split("$")[1].split(" ")[0].replace("\n", "");
             }
         }
 
         for (var i = 0; i < orderinfo_r.length; i++) {
             if (orderinfo_r[i].textContent == "訂單金額") {
-                htmlfound.allprice = cusname_s[i].nextElementSibling.textContent.replace("$", "");
+                htmlfound.allprice = orderinfo_r[i].nextElementSibling.textContent.replace("$", "").split(" ")[0];
             }
         }
         for (var i = 0; i < orderinfo_r.length; i++) {
             if (orderinfo_r[i].textContent == "發票") {
-                htmlfound.allprice = cusname_s[i].nextElementSibling.textContent;
+                htmlfound.receipt = orderinfo_r[i].nextElementSibling.textContent.split("發票")[0].slice(-2);
             }
         }
-        
+
         for (var i = 0; i < orderinfo_r.length; i++) {
             if (orderinfo_r[i].textContent == "商品價格") {
-                htmlfound.prdprice = cusname_s[i].nextElementSibling.textContent.split("=")[1].replace(" $", "");
+                htmlfound.prdprice = orderinfo_r[i].nextElementSibling.textContent.split("=")[1].replace(" $", "");
             }
         }
 
 
         for (var i = 0; i < prdinfo_r.length; i++) {
-            if (orderinfo_r[i].textContent == "方案") {
-                htmlfound.prdprice = cusname_s[i].nextElementSibling.textContent.split("*")[0];
+            if (prdinfo_r[i].textContent == "方案") {
+                htmlfound.option = prdinfo_r[i].nextElementSibling.textContent.split("*")[0].replace(" ", "");
             }
         }
         for (var i = 0; i < prdinfo_r.length; i++) {
-            if (orderinfo_r[i].textContent == "選項") {
-                htmlfound.prdprice = cusname_s[i].nextElementSibling.textContent;
+            if (prdinfo_r[i].textContent == "選項") {
+                for (var ii = i; ii < prdinfo_r.length; ii++) {
+                    htmlfound.prd.push(prdinfo_r[ii].nextElementSibling.textContent)
+                }
             }
         }
         
+        htmlfound.prdurl = document_root.querySelectorAll(".card-box")[1].querySelectorAll("a")[0].getAttribute("href").split("/")
+        htmlfound.prdurl = htmlfound.prdurl[htmlfound.prdurl.length-1]
+        htmlfound.prdname = document_root.querySelectorAll(".card-box")[1].querySelectorAll("a")[0].textContent
+        console.log(htmlfound)
 
 
 
