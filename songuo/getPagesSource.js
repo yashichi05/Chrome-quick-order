@@ -40,7 +40,7 @@ function DOMtoString(document_root) {
         for (var i = 0; i < orderinfo_r.length; i++) {
 
             if (orderinfo_r[i].textContent == "聯絡電話") {
-                htmlfound.tel = orderinfo_r[i].nextElementSibling.textContent;
+                htmlfound.tel = "'"+orderinfo_r[i].nextElementSibling.textContent;
             }
 
         }
@@ -102,9 +102,9 @@ function DOMtoString(document_root) {
                 }
             }
         }
-        
+        //商品ID、名稱
         htmlfound.prdurl = document_root.querySelectorAll(".card-box")[1].querySelectorAll("a")[0].getAttribute("href").split("/")
-        htmlfound.prdurl = htmlfound.prdurl[htmlfound.prdurl.length-1]
+        htmlfound.prdurl = htmlfound.prdurl[htmlfound.prdurl.length-2]//split 的陣列 倒數第二個
         htmlfound.prdname = document_root.querySelectorAll(".card-box")[1].querySelectorAll("a")[0].textContent
         console.log(htmlfound)
 

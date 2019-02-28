@@ -11,41 +11,49 @@ chrome.runtime.onMessage.addListener(function (request, sender) {
             var parser = new DOMParser();
             isohtml = parser.parseFromString(items.sg_value, "text/html");
 
-            var found = 0;
-            if (result.prd.length == 0) { //無款式
 
-                //搜尋ISO
-                var trlist = isohtml.querySelectorAll("tr"); //G表商品列
-                var row
-                found = 0; //有沒有找到東西
-                for (ii = 0; ii < trlist.length; ii++) {
-                    //macth 搜尋字串是否含有特定文字
 
-                    if (trlist[ii].querySelectorAll("td")[3].innerHTML.match(result.prdurl)) {
-                        row = ii;
-                        found = 1
+            //搜尋ISO
+            var trlist = isohtml.querySelectorAll("tr"); //G表商品列
+            var row = -1
+            var prd_iso = ""
+            var prd_type = ""
+            for (ii = 0; ii < trlist.length; ii++) {
+                //macth 搜尋字串是否含有特定文字
 
-                        break;
-                    }
-
+                if (trlist[ii].querySelectorAll("td")[3].innerHTML == result.prdurl) {
+                    var row = ii;
+                    result.prdname = trlist[row].querySelectorAll("td")[1].textContent; //有找到則取代網頁產品名
+                    prd_iso = trlist[row].querySelectorAll("td")[0].textContent;
+                    prd_type = trlist[row].querySelectorAll("td")[2].textContent;
+                    break;
                 }
-                var today = new Date()
-                //寫入訂單資料
-                if (found == 1) {
-                    //輸出顯示
-                    input1.value += today.getFullYear().toString() + "/" + (today.getMonth() + 1).toString() + "/" + today.getDate().toString() + "	" +
-                        result.orderid + "	" + result.cusname + "	" + result.tel + "	" +   result.ship + "	" + result.allprice + "\n";
-
-
-                } else { //iso找不到，則顯示文字
-
-                }
-
-
-
 
             }
 
+            //打訂單
+            var today = new Date()
+            if (result.prd.length == 0) { //無款式
+
+
+                //輸出顯示
+                input1.value += today.getFullYear().toString() + "/" + (today.getMonth() + 1).toString() + "/" + today.getDate().toString() + "	" +
+                    result.orderid + "	" + result.cusname + "	" + result.tel + "	" + prd_iso + "	" + result.prdname + "	" + prd_type + "	" + result.option.split("入")[0] + "	" + result.option + "	" + result.prdprice + "	" + result.fee + "	" + result.discount + "	" + result.allprice + "	" + result.receipt + "	" + result.ship + "\n";
+            } else { //有款式
+
+                for (var i = 0; i < result.prd.length; i++) {
+                    input1.value += today.getFullYear().toString() + "/" + (today.getMonth() + 1).toString() + "/" + today.getDate().toString() + "	" +
+                        result.orderid + "	" + result.cusname + "	" + result.tel + "	" + "	" + result.prdname + "	" + result.prd[i].split("*")[0] + "	" + result.prd[i].split("*")[1].split("(")[0].replace(" ", "");
+                    if (i == 0) { //訂單第一列
+                        input1.value += "	" + result.option + "	" + result.prdprice + "	" + result.fee + "	" + result.discount + "	" + result.allprice + "	" + result.receipt + "	" + result.ship + "\n"
+                    } else { //不是第一列則直接換行
+                        input1.value += "\n"
+                    }
+
+
+                }
+
+            }
 
 
 
