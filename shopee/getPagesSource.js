@@ -78,7 +78,7 @@ function DOMtoString(document_root) {
 
         for (var i = 0; i < priceinfo_r.length; i++) {
             if (priceinfo_r[i].textContent == "訂單金額") {
-                htmlfound.allprice = priceinfo_r[i].nextElementSibling.textContent.replace("$", "");
+                htmlfound.allprice = priceinfo_r[i].nextElementSibling.textContent.replace("$", "").replace(",","");
             }
         }
         for (var i = 0; i < priceinfo_r.length; i++) {
