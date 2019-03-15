@@ -103,7 +103,7 @@ function DOMtoString(document_root) {
                 htmlfound.prd.push({
                     'prdname': prdinfo[i].textContent,
                     'prdiso': prdinfo[i].nextElementSibling.textContent.split("商品選項貨號: "),
-                    'prdprice': prd_price[i + 1].textContent,
+                    'prdprice': prd_price[i + 1].textContent.replace(",",""),
                     'prdcount': prd_price[i + 1].nextElementSibling.textContent,
                     'true_iso': "",
                     'true_name': "",

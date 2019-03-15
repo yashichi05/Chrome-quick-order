@@ -21,7 +21,7 @@ chrome.runtime.onMessage.addListener(function (request, sender) {
             var row = -1
 
             for (i = 0; i < result.prd.length; i++) { //查ISO資料
-                var target_iso = result.prd[i].prdiso[result.prd[i].prdiso.length - 1].replace(" ", "").replace(" ", "") //兩種空白字元
+                var target_iso = result.prd[i].prdiso[result.prd[i].prdiso.length - 1].replace(" ", "").replace(" ", "").replace("	","") //兩種空白字元
                 for (ii = 0; ii < trlist.length; ii++) {
                     //macth 搜尋字串是否含有特定文字
                     if (trlist[ii].querySelectorAll("td")[0].innerHTML.match(target_iso)) {
