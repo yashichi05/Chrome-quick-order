@@ -55,7 +55,7 @@ function DOMtoString(document_root) {
         }
 
         for (var i = 0; i < orderinfo_r.length; i++) {
-            if (orderinfo_r[i].textContent == "運送資訊") {
+            if (orderinfo_r[i].textContent == "運送資訊選項") {
                 htmlfound.ship = orderinfo_r[i].nextElementSibling.textContent.split("#")[0];
                 if (htmlfound.ship == "7-11") {
                     htmlfound.ship = "'7-11"
