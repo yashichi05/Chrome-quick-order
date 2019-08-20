@@ -1,0 +1,11 @@
+{
+  "name": "yahooOrder",
+  "version": "1.0",
+  "manifest_version": 2,
+  "description": "Get pages source from a popup",
+  "browser_action": {
+    "default_icon": "hello_extensions.png",
+    "default_popup": "popup.html"
+  },
+  "permissions": ["tabs", "<all_urls>","storage"]
+}

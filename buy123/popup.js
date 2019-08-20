@@ -4,7 +4,7 @@ chrome.runtime.onMessage.addListener(function (request, sender) {
     if (request.action == "getSource") {
         //讀取已存的ISO商品明細
         chrome.storage.local.get("value", function (items) {
-            document.getElementById('isolist').value = items.value
+            //document.getElementById('isolist').value = items.value
             result = request.source
             //轉ISO資料為html
             var parser = new DOMParser();
