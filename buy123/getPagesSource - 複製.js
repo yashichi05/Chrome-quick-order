@@ -17,7 +17,6 @@ function DOMtoString(document_root) {
         var f_ship //超商*
         var ship_code //非超商要-1
         var sp_prd //分割
-        var site //地址
         f_prdtype = '' //商品選項 暫時空的----
         f_ship = document_root.querySelectorAll("h1")[0].textContent[0];
 
@@ -52,7 +51,6 @@ function DOMtoString(document_root) {
 
             f_orderid = section_main[i * 10 + 2 + ship_code].textContent;
             f_cusname = section_main[i * 10 + 3 + ship_code].textContent;
-            f_site = section_main[i * 10 + 4 + ship_code].textContent;
             f_prdcounttype = section_main[i * 10 + 6 + ship_code].textContent;
             f_prd = section_main[i * 10 + 7 + ship_code].textContent;
             f_prd = f_prd.replace(/\n/g, "").replace(/	/g, "") //去除換行
@@ -67,8 +65,7 @@ function DOMtoString(document_root) {
                 prd: f_prd,
                 prdcount: f_prdcount,
                 ship: f_ship,
-                sped_prd : sp_prd,
-                site : f_site
+                sped_prd : sp_prd
             })
             
             //console.log(f_cusname, f_prdcounttype, f_prdtype, f_prd, f_prdcount, f_ship,sp_prd)

@@ -33,58 +33,19 @@ chrome.runtime.onMessage.addListener(function (request, sender) {
 
             //打訂單
             var today = new Date()
-            var time
-            month_o = (today.getMonth() + 1).toString()
-            date_o = today.getDate().toString()
-            hour_o = today.getHours().toString()
-            min_o = today.getMinutes().toString()
-            sec_o = today.getSeconds().toString()
-            month_o = ("0" + month_o).slice(-2)
-            date_o = ("0" + date_o).slice(-2)
-            hour_o = ("0" + hour_o).slice(-2)
-            min_o = ("0" + min_o).slice(-2)
-            sec_o = ("0" + sec_o).slice(-2)
-            time = today.getFullYear().toString() + "-" +
-                month_o + "-" + date_o + " " + hour_o + ":" + min_o + ":" + sec_o
             if (result.prd.length == 0) { //無款式
 
 
                 //輸出顯示
-                input1.value += "d08" + "	" + time + "	" +
-                    result.orderid + "		" +
-                    prd_iso + "	" +
-                    result.prdname + "	" +
-                    prd_type + "			" +
-                    result.option.split("入")[0] + "	" +
-                    result.option + "	" +
-                    result.prdprice + "	" +
-                    result.fee + "	" +
-                    result.discount + "	" +
-                    result.allprice + "	" +
-                    result.receipt + "	" +
-                    result.cusname + "	" +
-                    result.tel + "	" +
-                    result.ship + "\n";
+                input1.value += today.getFullYear().toString() + "/" + (today.getMonth() + 1).toString() + "/" + today.getDate().toString() + "	" +
+                    result.orderid + "	" + result.cusname + "	" + result.tel + "	" + prd_iso + "	" + result.prdname + "	" + prd_type + "	" + result.option.split("入")[0] + "	" + result.option + "	" + result.prdprice + "	" + result.fee + "	" + result.discount + "	" + result.allprice + "	" + result.receipt + "	" + result.ship + "\n";
             } else { //有款式
 
                 for (var i = 0; i < result.prd.length; i++) {
-                    input1.value += "d08" + "	" + time + "	" +
-                        result.orderid + "		" +
-                        result.prdname + "	" +
-                        result.prd[i].split("*")[0] + "		" +
-                        result.allprice + "	" +
-                        result.prd[i].split("*")[1].split("(")[0].replace(" ", "");
+                    input1.value += today.getFullYear().toString() + "/" + (today.getMonth() + 1).toString() + "/" + today.getDate().toString() + "	" +
+                        result.orderid + "	" + result.cusname + "	" + result.tel + "	" + "	" + result.prdname + "	" + result.prd[i].split("*")[0] + "	" + result.prd[i].split("*")[1].split("(")[0].replace(" ", "");
                     if (i == 0) { //訂單第一列
-                        input1.value += "	" +
-                            result.option + "	" +
-                            result.prdprice + "	" +
-                            result.fee + "	" +
-                            result.discount + "	" +
-                            result.allprice + "	" +
-                            result.receipt + "	" +
-                            result.cusname + "	" +
-                            result.tel + "	" + "	" +
-                            result.ship + "\n"
+                        input1.value += "	" + result.option + "	" + result.prdprice + "	" + result.fee + "	" + result.discount + "	" + result.allprice + "	" + result.receipt + "	" + result.ship + "\n"
                     } else { //不是第一列則直接換行
                         input1.value += "\n"
                     }

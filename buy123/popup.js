@@ -12,34 +12,58 @@ chrome.runtime.onMessage.addListener(function (request, sender) {
 
             var found = 0;
             var today = new Date()
+            var time
+            month_o = (today.getMonth() + 1).toString()
+            date_o = today.getDate().toString()
+            hour_o = today.getHours().toString()
+            min_o = today.getMinutes().toString()
+            sec_o = today.getSeconds().toString()
+            month_o = ("0" + month_o).slice(-2)
+            date_o = ("0" + date_o).slice(-2)
+            hour_o = ("0" + hour_o).slice(-2)
+            min_o = ("0" + min_o).slice(-2)
+            sec_o = ("0" + sec_o).slice(-2)
+
+            time = today.getFullYear().toString() + "-" +
+                month_o + "-" + date_o + " " + hour_o + ":" + min_o + ":" + sec_o
             for (i = 0; i < result.length; i++) {
                 if (result[i].sped_prd.length > 2) {
-                    var fr = 1
                     //提取 多款式count
                     count_ary = []
                     while (result[i].prd != "") {
                         str_num = result[i].prd.match(/\* [0-9]/)[0] //得到第一個數量 * 1
-                        count_ary.push(str_num.replace("*","").replace(" ",""))
+                        count_ary.push(str_num.replace("*", "").replace(" ", ""))
                         str_index = result[i].prd.match(/\* [0-9]/)['index'] //得到第一個位置
                         next_start = str_index + str_num.length
                         result[i].prd = result[i].prd.substr(next_start) //下一個開始
                     }
 
                     for (ii = 0; ii < result[i].sped_prd.length - 1; ii++) {
-                        if (fr == 1) {
-                            input1.value += today.getFullYear().toString() + "/" + (today.getMonth() + 1).toString() + "/" + today.getDate().toString() + "	" +
-                                result[i].orderdown + "	" + result[i].orderid + "	" + result[i].cusname + "		" + result[i].sped_prd[ii] + "	" + result[i].prdtype + "	" + count_ary[ii] + "	" + result[i].prdcounttype + "		" + result[i].ship + "\n"
-                        } else {
-                            input1.value += today.getFullYear().toString() + "/" + (today.getMonth() + 1).toString() + "/" + today.getDate().toString() + "	" +
-                                result[i].orderdown + "	" + result[i].orderid + "	" + result[i].cusname + "		" + result[i].sped_prd[ii] + "	" + result[i].prdtype + "	" + count_ary[ii] + "	" + "\n"
 
-                        }
-                        var fr = 0
+                        input1.value += "D09" + "	" +
+                            time + "	" +
+                            result[i].orderid + "	" +
+                            result[i].sped_prd[ii] + "	" +
+                            result[i].prdtype + "	" + "	" + "	" + "0" + "	" +
+                            count_ary[ii] + "	" + "0" + "	" + "	" + "5" + "	" +
+                            result[i].prdcounttype + "	" +
+                            result[i].cusname + "			" +
+                            result[i].site + "	" +
+                            result[i].ship + "\n"
+
                     }
 
                 } else {
-                    input1.value += today.getFullYear().toString() + "/" + (today.getMonth() + 1).toString() + "/" + today.getDate().toString() + "	" +
-                        result[i].orderdown + "	" + result[i].orderid + "	" + result[i].cusname + "		" + result[i].prd + "	" + result[i].prdtype + "	" + result[i].prdcount + "	" + result[i].prdcounttype + "		" + result[i].ship + "\n"
+                    input1.value += "D09" + "	" +
+                        time + "	" +
+                        result[i].orderid + "	" +
+                        result[i].prd + "	" +
+                        result[i].prdtype + "	" + "	" + "	" + "0" + "	" +
+                        result[i].prdcount + "	" + "0" + "	" + "	" + "5" + "	" +
+                        result[i].prdcounttype + "	" +
+                        result[i].cusname + "			" +
+                        result[i].site + "	" +
+                        result[i].ship + "\n"
                 }
             }
 
